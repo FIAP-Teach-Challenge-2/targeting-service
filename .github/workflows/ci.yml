@@ -1,0 +1,16 @@
+name: Pipeline de CI - targeting-service
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    uses: FIAP-Teach-Challenge-2/toggle-master-ci/.github/workflows/reusable-ci-python.yml@main
+    with:
+      service-name: targeting-service
+      ecr-repository: togglemaster/targeting-service
+      needs-postgres: true
+    secrets: inherit
