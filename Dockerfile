@@ -10,7 +10,8 @@ ENV PATH="/opt/venv/bin:$PATH"
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir -r requirements.txt
+    && pip install --no-cache-dir -r requirements.txt \
+    && opentelemetry-bootstrap -a install
 
 FROM python:3.10-slim AS runtime
 
@@ -30,4 +31,4 @@ USER app
 
 EXPOSE 8003
 
-CMD ["sh", "-c", "exec gunicorn --bind 0.0.0.0:${PORT:-8003} app:app"]
+CMD ["sh", "-c", "exec opentelemetry-instrument gunicorn --bind 0.0.0.0:${PORT:-8003} app:app"]
